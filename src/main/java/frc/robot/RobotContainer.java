@@ -18,6 +18,7 @@ import frc.robot.States.shooterEnums.feederState;
 import frc.robot.States.shooterEnums.shooterState;
 import frc.robot.autos.*;
 import frc.robot.CommandFactory.AmpFactory;
+import frc.robot.CommandFactory.ShooterFactory;
 import frc.robot.commands.*;
 import frc.robot.commands.PhotonVisionCmds.RotateMove;
 import frc.robot.subsystems.*;
@@ -53,37 +54,39 @@ public class RobotContainer {
    // private final SysIDTest testingSwerve = new SysIDTest(s_Swerve);
 
    //Commands
-   private final AmpFactory amFactory = new CommandFactory.AmpFactory(s_amp);
+   private final AmpFactory ampFactory = new CommandFactory.AmpFactory(s_amp);
+   private final ShooterFactory shooterFactory = new CommandFactory.ShooterFactory(s_shooter);
 
-   //private final RotateMove c_DriveToTag = new RotateMove(null,null,null,null,null);
-    private final AmpCommand c_ampHome = new AmpCommand(new AmpCommand.AmpConfiguration(s_amp)
-        .withAimingSetPoints(ampArmSetpoints.HOME).build());
-    private final AmpCommand c_ampScore = new AmpCommand(new AmpCommand.AmpConfiguration(s_amp)
-        .withAimingSetPoints(ampArmSetpoints.TRAP).build());
-    private final AmpCommand c_ampIndexIn = new AmpCommand(new AmpCommand.AmpConfiguration(s_amp)
-        .withIndexState(ampIndexState.INTAKE).build());
-    private final AmpCommand c_ampIndexOut = new AmpCommand(new AmpCommand.AmpConfiguration(s_amp)
-        .withIndexState(ampIndexState.OUT).build());
+    //private final RotateMove c_DriveToTag = new RotateMove(null,null,null,null,null);
+    // aim amp arms
+    private final AmpCommand c_ampHome = ampFactory.createAmpHomeCommand();
+    private final AmpCommand c_ampScore = ampFactory.createAmpScoreCommand();
 
-    private final ShooterCommand c_shooterFeedIn = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
-        .withFeederState(feederState.INTAKE).build());
-    private final ShooterCommand c_shooterFeedOut = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
-        .withFeederState(feederState.OUT).build());
-    private final ShooterCommand c_shooterShoot = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
-        .withShooterState(shooterState.SHOOT).build());
-    private final ShooterCommand c_shooterUnshoot = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
-        .withShooterState(shooterState.FEEDBACK).build());
-    private final ShooterCommand c_shooterStop = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
-        .withShooterState(shooterState.STOP).build());
-    private final ShooterCommand c_shootAimNear = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
-        .withAimState(aimingSetPoints.NEAR).build());
-    private final ShooterCommand c_shootAimFar = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
-        .withAimState(aimingSetPoints.FAR).build());
+    // score * intake notes 
+    private final AmpCommand c_ampIndexIn = ampFactory.createAmpIndexInCommand();
+    private final AmpCommand c_ampIndexOut = ampFactory.createAmpIndexOutCommand();
 
+    // feed notes into the shooter
+    private final ShooterCommand c_shooterFeedIn = shooterFactory.createIntakeCommand();
+    private final ShooterCommand c_shooterFeedOut = shooterFactory.createFeedOutCommand();
+    private final ShooterCommand c_shooterFeedStop = shooterFactory.createFeedStopCommand();
+
+    // shoot the notes
+    private final ShooterCommand c_ShooterShoot = shooterFactory.createShootCommand();
+    private final ShooterCommand c_shooterUnshoot = shooterFactory.createUnshootCommand();
+    private final ShooterCommand c_shooterStop = shooterFactory.createStopShootCommand();
+
+    // aim the shooter
+    private final ShooterCommand c_shooterAimNear = shooterFactory.createAimNearCommand();
+    private final ShooterCommand c_shooterAimFar = shooterFactory.createAimFarCommand();
+    private final ShooterCommand c_shooterAimForIntake = shooterFactory.createAimForIntakeCommand();
+    private final ShooterCommand c_shooterAimHome = shooterFactory.createShooterHomeCommand();
 
     private final IntakeCommand c_intakeIn = new IntakeCommand(s_intake, intakeState.INTAKE);
     private final IntakeCommand c_intakeOut = new IntakeCommand(s_intake, intakeState.OUT);
     private final IntakeCommand c_intakeStop = new IntakeCommand(s_intake, intakeState.STOP);
+    private final IntakeCommand c_intakeToAmp = new IntakeCommand(s_intake, intakeState.AMP_INTAKE);
+    private final IntakeCommand c_intakeAmpOut = new IntakeCommand(s_intake, intakeState.OUT);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -110,6 +113,9 @@ public class RobotContainer {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         //configureTestBindings();
+        configureDriver2AmpBindings();
+        configureDriver2IntakeBindings();
+        configureDriver2ShooterBindings();
     }
 
     private void configureTestBindings() {
@@ -117,6 +123,47 @@ public class RobotContainer {
         driver2.b().onTrue(testingSwerve.sysIdDynamic(SysIdRoutine.Direction.kForward));
         driver2.x().onTrue(testingSwerve.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
         driver2.y().onTrue(testingSwerve.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    }
+
+    private void configureDriver2ShooterBindings() {
+        driver2.pov(0).onTrue(c_shooterAimFar);
+        driver2.pov(90).onTrue(c_shooterAimNear);
+        // unessaery change later
+        driver2.pov(180).onTrue(c_shooterAimForIntake);
+        driver2.pov(-1).onTrue(c_shooterAimHome);
+
+        driver2.rightTrigger().onTrue(c_ShooterShoot);
+        driver2.rightTrigger().onFalse(c_shooterStop);
+
+        driver2.rightBumper().onTrue(c_shooterFeedIn);
+        driver2.rightBumper().onFalse(c_shooterFeedStop);
+
+        driver2.pov(270).onTrue(c_shooterUnshoot);
+        driver2.pov(270).onTrue(c_shooterFeedOut);
+        driver2.pov(270).onFalse(c_shooterFeedStop);
+        driver2.pov(270).onFalse(c_shooterStop);
+    }
+
+    private void configureDriver2AmpBindings() {
+        driver2.leftTrigger().onTrue(c_ampScore);
+        driver2.leftTrigger().onFalse(c_ampHome);
+
+        driver2.leftBumper().onTrue(c_ampIndexIn);
+        driver2.leftBumper().onFalse(c_ampIndexOut);
+    }
+
+    private void configureDriver2IntakeBindings() {
+        driver2.a().onTrue(c_intakeIn);
+        driver2.a().onFalse(c_intakeStop);
+
+        driver2.b().onTrue(c_intakeOut);
+        driver2.b().onFalse(c_intakeStop);
+
+        driver2.x().onTrue(c_intakeToAmp);
+        driver2.x().onFalse(c_intakeStop);
+        
+        driver2.y().onTrue(c_intakeAmpOut);
+        driver2.y().onFalse(c_intakeStop);
     }
 
     /**

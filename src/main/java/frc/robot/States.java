@@ -5,7 +5,8 @@ public class States {
         INTAKE, 
         OUT,
         STOP,
-        AMP_INTAKE
+        AMP_INTAKE,
+        AMP_OUT
     }
 
     public class shooterEnums {
