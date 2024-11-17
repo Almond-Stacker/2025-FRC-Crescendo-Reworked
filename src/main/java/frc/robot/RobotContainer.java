@@ -17,6 +17,7 @@ import frc.robot.States.shooterEnums.aimingSetPoints;
 import frc.robot.States.shooterEnums.feederState;
 import frc.robot.States.shooterEnums.shooterState;
 import frc.robot.autos.*;
+import frc.robot.CommandFactory.AmpFactory;
 import frc.robot.commands.*;
 import frc.robot.commands.PhotonVisionCmds.RotateMove;
 import frc.robot.subsystems.*;
@@ -52,8 +53,34 @@ public class RobotContainer {
    // private final SysIDTest testingSwerve = new SysIDTest(s_Swerve);
 
    //Commands
+   private final AmpFactory amFactory = new CommandFactory.AmpFactory(s_amp);
+
    //private final RotateMove c_DriveToTag = new RotateMove(null,null,null,null,null);
-   
+    private final AmpCommand c_ampHome = new AmpCommand(new AmpCommand.AmpConfiguration(s_amp)
+        .withAimingSetPoints(ampArmSetpoints.HOME).build());
+    private final AmpCommand c_ampScore = new AmpCommand(new AmpCommand.AmpConfiguration(s_amp)
+        .withAimingSetPoints(ampArmSetpoints.TRAP).build());
+    private final AmpCommand c_ampIndexIn = new AmpCommand(new AmpCommand.AmpConfiguration(s_amp)
+        .withIndexState(ampIndexState.INTAKE).build());
+    private final AmpCommand c_ampIndexOut = new AmpCommand(new AmpCommand.AmpConfiguration(s_amp)
+        .withIndexState(ampIndexState.OUT).build());
+
+    private final ShooterCommand c_shooterFeedIn = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
+        .withFeederState(feederState.INTAKE).build());
+    private final ShooterCommand c_shooterFeedOut = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
+        .withFeederState(feederState.OUT).build());
+    private final ShooterCommand c_shooterShoot = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
+        .withShooterState(shooterState.SHOOT).build());
+    private final ShooterCommand c_shooterUnshoot = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
+        .withShooterState(shooterState.FEEDBACK).build());
+    private final ShooterCommand c_shooterStop = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
+        .withShooterState(shooterState.STOP).build());
+    private final ShooterCommand c_shootAimNear = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
+        .withAimState(aimingSetPoints.NEAR).build());
+    private final ShooterCommand c_shootAimFar = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
+        .withAimState(aimingSetPoints.FAR).build());
+
+
     private final IntakeCommand c_intakeIn = new IntakeCommand(s_intake, intakeState.INTAKE);
     private final IntakeCommand c_intakeOut = new IntakeCommand(s_intake, intakeState.OUT);
     private final IntakeCommand c_intakeStop = new IntakeCommand(s_intake, intakeState.STOP);

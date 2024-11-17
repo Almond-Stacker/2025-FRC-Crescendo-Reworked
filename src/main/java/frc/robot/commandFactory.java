@@ -6,50 +6,69 @@ import frc.robot.subsystems.*;
 import frc.robot.States.shooterEnums.*;
 import frc.robot.States.AmpEnums.*;
 
-public class commandFactory {
+public class CommandFactory {
     
-    public class shooterFactory {
+    public static class ShooterFactory {
         private ShooterSubsystem s_shooter;
 
-        public shooterFactory(ShooterSubsystem shooter) {
+        public ShooterFactory(ShooterSubsystem shooter) {
             this.s_shooter = shooter;
         }
 
-        public final ShooterCommand c_shooterFeedIn = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
-            .withFeederState(feederState.INTAKE).build());
-        public final ShooterCommand c_shooterFeedOut = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
-            .withFeederState(feederState.OUT).build());
-        public final ShooterCommand c_shooterShoot = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
-            .withShooterState(shooterState.SHOOT).build());
-        public final ShooterCommand c_shooterUnshoot = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
-            .withShooterState(shooterState.FEEDBACK).build());
-        public final ShooterCommand c_shooterStop = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
-            .withShooterState(shooterState.STOP).build());
-        public final ShooterCommand c_shooterAimNear = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
-            .withAimState(aimingSetPoints.NEAR).build());
-        public final ShooterCommand c_shooterAimFar = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
-            .withAimState(aimingSetPoints.FAR).build());
-        public final ShooterCommand c_shooterAimForIntake = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
-            .withAimState(aimingSetPoints.INTAKE).build());
-        public final ShooterCommand c_shooterHome = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
-            .withAimState(aimingSetPoints.HOME).build());
+        public ShooterCommand createIntakeCommand() {
+            return new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter).withFeederState(feederState.INTAKE).build());
+        }
+        public ShooterCommand createFeedOutCommand() {
+            return new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter).withFeederState(feederState.OUT).build());
+        }
+        public ShooterCommand createFeedStopCommand() {
+            return new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter).withFeederState(feederState.STOP).build());
+        }
+        public ShooterCommand createShootCommand() {
+            return new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter).withShooterState(shooterState.SHOOT).build());
+        }
+        public ShooterCommand createUnshootCommand() {
+            return new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter).withShooterState(shooterState.FEEDBACK).build());
+        }
+        public ShooterCommand createStopShootCommand() {
+            return new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter).withShooterState(shooterState.STOP).build());
+        }
+        public ShooterCommand createAimNearCommand() {
+            return new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter).withAimState(aimingSetPoints.NEAR).build());
+        }
+        public ShooterCommand createAimFarCommand() {
+            return new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter).withAimState(aimingSetPoints.FAR).build());
+        }
+        public ShooterCommand createAimForIntakeCommand() {
+            return new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter).withAimState(aimingSetPoints.INTAKE).build());
+        }
+        public ShooterCommand createShooterHomeCommand() {
+            return new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter).withAimState(aimingSetPoints.HOME).build());
+        }
     }
 
-    public class ampFactory {
+    public static class AmpFactory {
         private AmpSubsystem s_amp;
 
-        public ampFactory(AmpSubsystem amp) {
+        public AmpFactory(AmpSubsystem amp) {
             s_amp = amp;
         }
 
-        public final AmpCommand c_ampHome = new AmpCommand(new AmpCommand.AmpConfiguration(s_amp)
-            .withAimingSetPoints(ampArmSetpoints.HOME).build());
-        public final AmpCommand c_ampScore = new AmpCommand(new AmpCommand.AmpConfiguration(s_amp)
-            .withAimingSetPoints(ampArmSetpoints.TRAP).build());
-        public final AmpCommand c_ampIndexIn = new AmpCommand(new AmpCommand.AmpConfiguration(s_amp)
-            .withIndexState(ampIndexState.INTAKE).build());
-        public final AmpCommand c_ampIndexOut = new AmpCommand(new AmpCommand.AmpConfiguration(s_amp)
-            .withIndexState(ampIndexState.OUT).build());
+        public AmpCommand createAmpHomeCommand() {
+            return new AmpCommand(new AmpCommand.AmpConfiguration(s_amp).withAimingSetPoints(ampArmSetpoints.HOME).build());
+        }
+
+        public AmpCommand createAmpScoreCommand() {
+            return new AmpCommand(new AmpCommand.AmpConfiguration(s_amp).withAimingSetPoints(ampArmSetpoints.TRAP).build());
+        }
+        
+        public AmpCommand createAmpIndexInCommand() {
+            return new AmpCommand(new AmpCommand.AmpConfiguration(s_amp).withIndexState(ampIndexState.INTAKE).build());
+        }
+        
+        public AmpCommand createAmpIndexOutCommand() {
+            return new AmpCommand(new AmpCommand.AmpConfiguration(s_amp).withIndexState(ampIndexState.OUT).build());
+        }
     }
 
 }
