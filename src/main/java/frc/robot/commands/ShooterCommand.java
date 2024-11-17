@@ -14,14 +14,13 @@ public class ShooterCommand extends Command{
     private final feederState fState;
     private final aimingSetPoints aState;
     private final shooterState sState; 
-    private final double speed;
 
     public ShooterCommand(ShooterConfiguration configuraton) {
         this.shooterSubsystem = configuraton.shooter;
         this.fState = configuraton.fState;
         this.aState = configuraton.aState;
         this.sState = configuraton.sState;
-        this.speed = configuraton.speed;
+        addRequirements(shooterSubsystem);
     }
 
     @Override
@@ -30,7 +29,7 @@ public class ShooterCommand extends Command{
             shooterSubsystem.setArmState(aState);
         }
         if(fState != null) {
-            shooterSubsystem.setFeedState(fState, speed);
+            shooterSubsystem.setFeedState(fState);
         }
         if(sState != null) {
             shooterSubsystem.setShootingState(sState);
@@ -42,7 +41,6 @@ public class ShooterCommand extends Command{
         private feederState fState;
         private aimingSetPoints aState;
         private shooterState sState;
-        private double speed;
 
         public ShooterConfiguration (ShooterSubsystem shooter) {
             this.shooter = shooter;
@@ -51,9 +49,8 @@ public class ShooterCommand extends Command{
             sState = null;
         }
 
-        public ShooterConfiguration withFeederState(feederState state, double speed) {
+        public ShooterConfiguration withFeederState(feederState state) { //, double speed) {
             this.fState = state;
-            this.speed = speed;
             return this;
         }
 
@@ -67,8 +64,8 @@ public class ShooterCommand extends Command{
             return this;
         }
 
-        public ShooterCommand bulid() {
-            return new ShooterCommand(this);
+        public ShooterConfiguration build() {
+            return this;
         }
     }
 }

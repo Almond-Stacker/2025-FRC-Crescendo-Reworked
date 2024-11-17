@@ -33,15 +33,35 @@ public class States {
         }
 
         public enum feederState {
-            INTAKE,
-            OUT,
-            STOP
+            INTAKE(0.2),
+            OUT(-0.2),
+            STOP(0);
+
+            private final double value;
+
+            feederState(double value) {
+                this.value = value;
+            }
+
+            public double getValue() {
+                return value;
+            }
         }
 
         public enum shooterState {
-            INTAKE,
-            SHOOT,
-            STOP
+            SHOOT(0.7),
+            FEEDBACK(-0.2),
+            STOP(0);
+
+            private final double value;
+
+            shooterState(double value) {
+                this.value = value;
+            }
+
+            public double getValue() {
+                return value;
+            }
         }
     }
     

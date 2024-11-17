@@ -16,6 +16,7 @@ public class AmpCommand extends Command {
         this.ampSubsystem = configuration.ampSubsystem;
         this.aState = configuration.aState;
         this.iState = configuration.iState;
+        addRequirements(ampSubsystem);
     }
 
     @Override
@@ -40,15 +41,21 @@ public class AmpCommand extends Command {
 
         public AmpConfiguration(AmpSubsystem ampSubsystem) {
             this.ampSubsystem = ampSubsystem;
+            this.aState = null;
+            this.iState = null;
         }
 
-        public AmpConfiguration withAminingSetPoints(ampArmSetpoints state) {
+        public AmpConfiguration withAimingSetPoints(ampArmSetpoints state) {
             this.aState = state;
             return this;
         }
 
         public AmpConfiguration withIndexState(ampIndexState state) {
             this.iState = state;
+            return this;
+        }
+
+        public AmpConfiguration build() {
             return this;
         }
     }

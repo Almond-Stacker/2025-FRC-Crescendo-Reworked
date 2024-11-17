@@ -47,7 +47,7 @@ public class ShooterSubsystem extends SubsystemBase{
         armFeedforward = new ArmFeedforward(0, 0.5, 0);
 
         setShootingState(shooterState.STOP);
-        setFeedState(feederState.STOP, 0);
+        setFeedState(feederState.STOP);
         setArmState(aimingSetPoints.HOME);
     }
 
@@ -65,32 +65,12 @@ public class ShooterSubsystem extends SubsystemBase{
     }
 
     public void setShootingState(shooterState state) {
-        switch (state) {
-            case SHOOT:
-                setShootMotorSpeed(0.75, 0.75);
-                break;
-            case INTAKE:
-                setShootMotorSpeed(-0.2, 0);
-                break;
-            case STOP:
-                setShootMotorSpeed(0,0);
-                break; 
-        }   
+        setShootMotorSpeed(state.getValue());
         SmartDashboard.putString("Shooting Motors State", state.toString());
     }
 
-    public void setFeedState(feederState state, double speed) {
-        switch(state) {
-            case OUT:
-                setFeedMotorSpeed(speed);
-                break;
-            case INTAKE:
-                setFeedMotorSpeed(-speed);
-                break;
-            case STOP:
-                setFeedMotorSpeed(0);
-                break;
-        }
+    public void setFeedState(feederState state) {
+        setFeedMotorSpeed(state.getValue());
         SmartDashboard.putString("Feeder State", state.toString());
     }
 
@@ -111,9 +91,9 @@ public class ShooterSubsystem extends SubsystemBase{
         m_leftArmMotor.set(speed);
     }
 
-    private void setShootMotorSpeed(double topSpeed, double bottomSpeed) {
-        m_bottomShootingMotor.set(bottomSpeed);
-        m_topShootingMotor.set(topSpeed);
+    private void setShootMotorSpeed(double Speed) {
+        m_bottomShootingMotor.set(Speed);
+        m_topShootingMotor.set(Speed);
     }
 
     private void initializeMotors() {
