@@ -1,8 +1,10 @@
 package frc.robot;
 
+import frc.robot.commands.AmpCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.*;
 import frc.robot.States.shooterEnums.*;
+import frc.robot.States.AmpEnums.*;
 
 public class commandFactory {
     
@@ -31,6 +33,23 @@ public class commandFactory {
             .withAimState(aimingSetPoints.INTAKE).build());
         public final ShooterCommand c_shooterHome = new ShooterCommand(new ShooterCommand.ShooterConfiguration(s_shooter)
             .withAimState(aimingSetPoints.HOME).build());
+    }
+
+    public class ampFactory {
+        private AmpSubsystem s_amp;
+
+        public ampFactory(AmpSubsystem amp) {
+            s_amp = amp;
+        }
+
+        public final AmpCommand c_ampHome = new AmpCommand(new AmpCommand.AmpConfiguration(s_amp)
+            .withAimingSetPoints(ampArmSetpoints.HOME).build());
+        public final AmpCommand c_ampScore = new AmpCommand(new AmpCommand.AmpConfiguration(s_amp)
+            .withAimingSetPoints(ampArmSetpoints.TRAP).build());
+        public final AmpCommand c_ampIndexIn = new AmpCommand(new AmpCommand.AmpConfiguration(s_amp)
+            .withIndexState(ampIndexState.INTAKE).build());
+        public final AmpCommand c_ampIndexOut = new AmpCommand(new AmpCommand.AmpConfiguration(s_amp)
+            .withIndexState(ampIndexState.OUT).build());
     }
 
 }
