@@ -20,17 +20,8 @@ public class IntakeSubsystem extends SubsystemBase{
     private CANSparkFlex m_floorMotor;
     private PWMSparkMax m_frontMotor;
     public IntakeSubsystem() {
-        m_wheelMotor = new CANSparkFlex(Constants.IntakeSubsystemInfo.wheelMotorID, MotorType.kBrushless);
-        m_floorMotor = new CANSparkFlex(Constants.IntakeSubsystemInfo.floorMotorID, MotorType.kBrushless);
-        m_frontMotor = new PWMSparkMax(Constants.IntakeSubsystemInfo.frontMotorID);
-
-        CANSparkFlexUtil.setCANSparkFlexBusUsage(m_wheelMotor, Usage.kVelocityOnly);
-        CANSparkFlexUtil.setCANSparkFlexBusUsage(m_floorMotor, Usage.kVelocityOnly);
-
-        m_wheelMotor.setInverted(false);
-        m_frontMotor.setInverted(false); //was true
-        m_floorMotor.setInverted(false); //was true
-
+        initalizeMotors();
+        configureMotors();
         setIntakeState(intakeState.STOP);
     }
 
@@ -56,5 +47,20 @@ public class IntakeSubsystem extends SubsystemBase{
         m_wheelMotor.set(wheelValue);
         m_floorMotor.set(floorValue);
         m_frontMotor.set(frontValue);
+    }
+
+    private void initalizeMotors() {
+        m_wheelMotor = new CANSparkFlex(Constants.IntakeSubsystemInfo.wheelMotorID, MotorType.kBrushless);
+        m_floorMotor = new CANSparkFlex(Constants.IntakeSubsystemInfo.floorMotorID, MotorType.kBrushless);
+        m_frontMotor = new PWMSparkMax(Constants.IntakeSubsystemInfo.frontMotorID);
+    }
+
+    private void configureMotors() {
+        CANSparkFlexUtil.setCANSparkFlexBusUsage(m_wheelMotor, Usage.kVelocityOnly);
+        CANSparkFlexUtil.setCANSparkFlexBusUsage(m_floorMotor, Usage.kVelocityOnly);
+
+        m_wheelMotor.setInverted(false);
+        m_frontMotor.setInverted(false); //was true
+        m_floorMotor.setInverted(false); //was true
     }
 }

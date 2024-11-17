@@ -31,12 +31,6 @@ public class States {
         }
     }
 
-    public enum ampState {
-        INTAKE,
-        OUT,
-        STOP
-    }
-
     public enum feederState {
         INTAKE,
         OUT,
@@ -49,19 +43,43 @@ public class States {
         STOP
     }
 
-    // public enum shooterAimState {
-    //     HOME,
-    //     INTAKE,
-    //     TRAP,
-    //     FAR,
-    //     NEAR,
-    //     CLIMB,
-    //     FLOAT
-    // }
+    public enum ampIndexState {
+        INTAKE(1),
+        OUT(-1),
+        STOP(0);
 
-    public enum ampArmState {
-        HOME,
-        TRAP,
-        AMP
+        private final int value;
+
+        ampIndexState(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    public enum ampArmSetpoints {
+        HOME(174),
+        MIN(10),
+        TRAP(0),
+        AIM(23.1),
+        MAX(180),
+        UP(0),
+        DOWN(0);
+
+        private double value;
+
+        ampArmSetpoints(double value) {
+            this.value = value;
+        }
+
+        public double getValue() {
+            return value;
+        }
+        
+        public void setValue(double value) {
+            this.value = value;
+        }
     }
 }
