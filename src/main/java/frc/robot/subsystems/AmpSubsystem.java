@@ -12,8 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.util.CANSparkMaxUtil;
 import frc.lib.util.CANSparkMaxUtil.Usage;
-import frc.robot.States.ampArmSetpoints;
-import frc.robot.States.ampIndexState;
+import frc.robot.States.AmpEnums.*;
 
 public class AmpSubsystem extends SubsystemBase{
     private CANSparkMax m_rightArmMotor;

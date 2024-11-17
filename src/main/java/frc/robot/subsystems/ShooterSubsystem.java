@@ -18,9 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.util.CANSparkFlexUtil;
 import frc.lib.util.CANSparkFlexUtil.Usage;
 import frc.robot.Constants;
-import frc.robot.States.aimingSetPoints;
-import frc.robot.States.feederState;
-import frc.robot.States.shooterState;
+import frc.robot.States.shooterEnums.*;
 
 public class ShooterSubsystem extends SubsystemBase{
     // control arm to aim shooter
