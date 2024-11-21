@@ -50,9 +50,9 @@ public class IntakeSubsystem extends SubsystemBase{
     }
 
     private void initalizeMotors() {
-        m_wheelMotor = new CANSparkFlex(Constants.IntakeSubsystemInfo.wheelMotorID, MotorType.kBrushless);
-        m_floorMotor = new CANSparkFlex(Constants.IntakeSubsystemInfo.floorMotorID, MotorType.kBrushless);
-        m_frontMotor = new PWMSparkMax(Constants.IntakeSubsystemInfo.frontMotorID);
+        m_wheelMotor = new CANSparkFlex(Constants.IntakeSubsystemInfo.WHEEL_MOTOR_ID, MotorType.kBrushless);
+        m_floorMotor = new CANSparkFlex(Constants.IntakeSubsystemInfo.FLOOR_MOTOR_ID, MotorType.kBrushless);
+        m_frontMotor = new PWMSparkMax(Constants.IntakeSubsystemInfo.FRONT_MOTOR_ID);
     }
 
     private void configureMotors() {

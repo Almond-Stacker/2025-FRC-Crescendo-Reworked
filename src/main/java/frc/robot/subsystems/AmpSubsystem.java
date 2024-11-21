@@ -10,9 +10,11 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.lib.util.CANSparkMaxUtil;
 import frc.lib.util.CANSparkMaxUtil.Usage;
 import frc.robot.States.AmpEnums.*;
+import frc.robot.Constants.AmpSubsystemInfo;
 
 public class AmpSubsystem extends SubsystemBase{
     private CANSparkMax m_rightArmMotor;
@@ -56,9 +58,10 @@ public class AmpSubsystem extends SubsystemBase{
     }
 
     private void initalizeMotors() {
-        m_rightArmMotor = new CANSparkMax(frc.robot.Constants.AmpSubsystemInfo.rightArmMotorID, MotorType.kBrushless);
-        m_leftArmMotor = new CANSparkMax(frc.robot.Constants.AmpSubsystemInfo.leftArmMotorID, MotorType.kBrushless);
-        m_indexMotor = new PWMSparkMax(frc.robot.Constants.AmpSubsystemInfo.ampScorerMotorID);
+        m_rightArmMotor = new CANSparkMax(AmpSubsystemInfo.RIGHT_ARM_MOTOR_ID, MotorType.kBrushless);
+        m_leftArmMotor = new CANSparkMax(AmpSubsystemInfo.LEFT_ARM_MOTOR_ID, MotorType.kBrushless);
+        m_indexMotor = new PWMSparkMax(AmpSubsystemInfo.AMP_SCORER_MOTOR_ID);
+        armEncoder = new DutyCycleEncoder(AmpSubsystemInfo.AMP_ENCODER);
     }
 
     private void configureMotors() {

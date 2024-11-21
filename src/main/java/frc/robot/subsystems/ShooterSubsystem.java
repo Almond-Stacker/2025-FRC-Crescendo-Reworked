@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.lib.util.CANSparkFlexUtil;
 import frc.lib.util.CANSparkFlexUtil.Usage;
-import frc.robot.Constants;
+import frc.robot.Constants.ShooterSubsystemInfo;
 import frc.robot.States.shooterEnums.*;
 
 public class ShooterSubsystem extends SubsystemBase{
@@ -42,7 +42,7 @@ public class ShooterSubsystem extends SubsystemBase{
     public ShooterSubsystem() {
         initializeMotors();
         configureMotors();
-        armEncoder = new DutyCycleEncoder(Constants.ShooterSubsystemInfo.feederEncoder);
+        armEncoder = new DutyCycleEncoder(ShooterSubsystemInfo.FEEDER_ENCODER);
         armPidController = new PIDController(0.0125, 0, 0);
         armFeedforward = new ArmFeedforward(0, 0.5, 0);
 
@@ -97,12 +97,12 @@ public class ShooterSubsystem extends SubsystemBase{
     }
 
     private void initializeMotors() {
-        m_rightArmMotor = new CANSparkFlex(Constants.ShooterSubsystemInfo.rightArmMotorID, MotorType.kBrushless);
-        m_leftArmMotor = new CANSparkFlex(Constants.ShooterSubsystemInfo.leftArmMotorID, MotorType.kBrushless);
-        m_topShootingMotor = new CANSparkFlex(Constants.ShooterSubsystemInfo.topShootingMotorID, MotorType.kBrushless);
-        m_bottomShootingMotor = new CANSparkFlex(Constants.ShooterSubsystemInfo.bottomShootingMotorID, MotorType.kBrushless);
-        m_leftFeedMotor = new PWMSparkMax(Constants.ShooterSubsystemInfo.leftFeedingMotorID);
-        m_rightFeedMotor = new PWMSparkMax(Constants.ShooterSubsystemInfo.rightFeedingMotorID);
+        m_rightArmMotor = new CANSparkFlex(ShooterSubsystemInfo.RIGHT_ARM_MOTOR_ID, MotorType.kBrushless);
+        m_leftArmMotor = new CANSparkFlex(ShooterSubsystemInfo.LEFT_ARM_MOTOR_ID, MotorType.kBrushless);
+        m_topShootingMotor = new CANSparkFlex(ShooterSubsystemInfo.TOP_SHOOTING_MOTOR_ID, MotorType.kBrushless);
+        m_bottomShootingMotor = new CANSparkFlex(ShooterSubsystemInfo.BOTTOM_SHOOTING_MOTOR_ID, MotorType.kBrushless);
+        m_leftFeedMotor = new PWMSparkMax(ShooterSubsystemInfo.LEFT_FEEDING_MOTOR_ID);
+        m_rightFeedMotor = new PWMSparkMax(ShooterSubsystemInfo.RIGHT_FEEDING_MOTOR_ID);
     }
 
     private void configureMotors() {
