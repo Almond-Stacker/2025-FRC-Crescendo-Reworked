@@ -89,10 +89,10 @@ public class States {
 
         public enum ampArmSetpoints {
             HOME(306),
-            MIN(302),
+            MIN(304),
             TRAP(),
             AIM(),
-            MAX(180),
+            MAX(172),
             UP(),
             DOWN();
 
@@ -103,7 +103,7 @@ public class States {
             }
 
             ampArmSetpoints() {
-                this.value = 302;
+                this.value = 306;
             }
 
             public double getValue() {
