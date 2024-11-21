@@ -15,17 +15,21 @@ public class States {
             MAX(169.7),
             HOME(60),
             FLOAT(70),
-            INTAKE(MIN.getValue() + 20),
-            TRAP(MIN.getValue()),
-            FAR(MIN.getValue()),
-            NEAR(MIN.getValue()),
-            CLIMB(MIN.getValue());
+            INTAKE(),
+            TRAP(),
+            FAR(),
+            NEAR(),
+            CLIMB();
         
 
             private final double value;
 
             aimingSetPoints(double value) {
                 this.value = value;
+            }
+
+            aimingSetPoints() {
+                this.value = 60;
             }
 
             public double getValue() {
@@ -84,18 +88,22 @@ public class States {
         }
 
         public enum ampArmSetpoints {
-            HOME(174),
-            MIN(10),
-            TRAP(0),
-            AIM(23.1),
+            HOME(306),
+            MIN(302),
+            TRAP(),
+            AIM(),
             MAX(180),
-            UP(0),
-            DOWN(0);
+            UP(),
+            DOWN();
 
             private double value;
 
             ampArmSetpoints(double value) {
                 this.value = value;
+            }
+
+            ampArmSetpoints() {
+                this.value = 302;
             }
 
             public double getValue() {

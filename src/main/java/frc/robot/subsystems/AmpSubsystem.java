@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.util.CANSparkMaxUtil;
 import frc.lib.util.CANSparkMaxUtil.Usage;
+import frc.robot.Constants.AmpSubsystemInfo;
 import frc.robot.States.AmpEnums.*;
 
 public class AmpSubsystem extends SubsystemBase{
@@ -27,7 +28,7 @@ public class AmpSubsystem extends SubsystemBase{
     public AmpSubsystem() {
         initalizeMotors();
         configureMotors();
-
+        armEncoder = new DutyCycleEncoder(AmpSubsystemInfo.ampEncoder);
         armPID = new PIDController(0.008, 0, 0);
     }
 
