@@ -30,7 +30,6 @@ public class AmpSubsystem extends SubsystemBase{
     public AmpSubsystem() {
         initalizeMotors();
         configureMotors();
-        armEncoder = new DutyCycleEncoder(AmpSubsystemInfo.ampEncoder);
         armPID = new PIDController(0.008, 0, 0);
     }
 
