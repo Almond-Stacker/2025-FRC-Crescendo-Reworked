@@ -1,5 +1,7 @@
 package frc.robot;
 
+import javax.management.InstanceNotFoundException;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
@@ -32,17 +34,18 @@ import frc.robot.subsystems.*;
  */
 public class RobotContainer {
     /* Controllers */
-    private final Joystick driver = new Joystick(0);
-    private final CommandXboxController driver2 = new CommandXboxController(2);
+    // private final Joystick driver = new Joystick(0);
+    private final CommandXboxController driver0 = new CommandXboxController(0);
+    private final CommandXboxController driver1 = new CommandXboxController(1);
 
     /* Drive Controls */
-    private final int translationAxis = XboxController.Axis.kLeftY.value;
-    private final int strafeAxis = XboxController.Axis.kLeftX.value;
-    private final int rotationAxis = XboxController.Axis.kRightX.value;
+    // private final int translationAxis = XboxController.Axis.kLeftY.value;
+    // private final int strafeAxis = XboxController.Axis.kLeftX.value;
+    // private final int rotationAxis = XboxController.Axis.kRightX.value;
     
     /* Driver Buttons */
-    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
-    private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+    // private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
+    // private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
@@ -90,15 +93,22 @@ public class RobotContainer {
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
-        s_Swerve.setDefaultCommand(
-            new TeleopSwerve(
-                s_Swerve, 
-                () -> -driver.getRawAxis(translationAxis), 
-                () -> -driver.getRawAxis(strafeAxis), 
-                () -> -driver.getRawAxis(rotationAxis), 
-                () -> robotCentric.getAsBoolean()
-            )
-        );
+        // s_Swerve.setDefaultCommand(
+        //     new TeleopSwerve(
+        //         s_Swerve, 
+        //         () -> -driver.getRawAxis(translationAxis), 
+        //         () -> -driver.getRawAxis(strafeAxis), 
+        //         () -> -driver.getRawAxis(rotationAxis), 
+        //         () -> robotCentric.getAsBoolean()
+        //     )
+        // );
+
+        s_Swerve.setDefaultCommand(new TeleopSwerve(
+            s_Swerve, 
+            () -> -driver0.getLeftY(), 
+            () -> -driver0.getLeftX(), 
+            () -> -driver0.getRightX(),
+            () -> driver0.y().getAsBoolean()));
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -111,59 +121,59 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
+        driver0.rightBumper().onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         //configureTestBindings();
-        configureDriver2AmpBindings();
-        configureDriver2IntakeBindings();
-        configureDriver2ShooterBindings();
+        configureDriver1AmpBindings();
+        configureDriver1IntakeBindings();
+        configureDriver1ShooterBindings();
     }
 
     private void configureTestBindings() {
-        driver2.a().onTrue(testingSwerve.sysIdDynamic(SysIdRoutine.Direction.kForward));
-        driver2.b().onTrue(testingSwerve.sysIdDynamic(SysIdRoutine.Direction.kForward));
-        driver2.x().onTrue(testingSwerve.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-        driver2.y().onTrue(testingSwerve.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+        driver1.a().onTrue(testingSwerve.sysIdDynamic(SysIdRoutine.Direction.kForward));
+        driver1.b().onTrue(testingSwerve.sysIdDynamic(SysIdRoutine.Direction.kForward));
+        driver1.x().onTrue(testingSwerve.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+        driver1.y().onTrue(testingSwerve.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
     }
 
-    private void configureDriver2ShooterBindings() {
-        driver2.pov(0).onTrue(c_shooterAimFar);
-        driver2.pov(90).onTrue(c_shooterAimNear);
+    private void configureDriver1ShooterBindings() {
+        driver1.pov(0).onTrue(c_shooterAimFar);
+        driver1.pov(90).onTrue(c_shooterAimNear);
         // unessaery change later
-        driver2.pov(180).onTrue(c_shooterAimForIntake);
-        driver2.pov(-1).onTrue(c_shooterAimHome);
+        driver1.pov(180).onTrue(c_shooterAimForIntake);
+        driver1.pov(-1).onTrue(c_shooterAimHome);
 
-        driver2.rightTrigger().onTrue(c_ShooterShoot);
-        driver2.rightTrigger().onFalse(c_shooterStop);
+        driver1.rightTrigger().onTrue(c_ShooterShoot);
+        driver1.rightTrigger().onFalse(c_shooterStop);
 
-        driver2.rightBumper().onTrue(c_shooterFeedIn);
-        driver2.rightBumper().onFalse(c_shooterFeedStop);
+        driver1.rightBumper().onTrue(c_shooterFeedIn);
+        driver1.rightBumper().onFalse(c_shooterFeedStop);
 
-        driver2.pov(270).onTrue(c_shooterUnshoot);
-        driver2.pov(270).onTrue(c_shooterFeedOut);
-        driver2.pov(270).onFalse(c_shooterFeedStop);
-        driver2.pov(270).onFalse(c_shooterStop);
+        driver1.pov(270).onTrue(c_shooterUnshoot);
+        driver1.pov(270).onTrue(c_shooterFeedOut);
+        driver1.pov(270).onFalse(c_shooterFeedStop);
+        driver1.pov(270).onFalse(c_shooterStop);
     }
 
-    private void configureDriver2AmpBindings() {
-        driver2.leftTrigger().onTrue(c_ampScore);
-        driver2.leftTrigger().onFalse(c_ampHome);
+    private void configureDriver1AmpBindings() {
+        driver1.leftTrigger().onTrue(c_ampScore);
+        driver1.leftTrigger().onFalse(c_ampHome);
 
-        driver2.leftBumper().onTrue(c_ampIndexIn);
-        driver2.leftBumper().onFalse(c_ampIndexOut);
+        driver1.leftBumper().onTrue(c_ampIndexIn);
+        driver1.leftBumper().onFalse(c_ampIndexOut);
     }
 
-    private void configureDriver2IntakeBindings() {
-        driver2.a().onTrue(c_intakeIn);
-        driver2.a().onFalse(c_intakeStop);
+    private void configureDriver1IntakeBindings() {
+        driver1.a().onTrue(c_intakeIn);
+        driver1.a().onFalse(c_intakeStop);
 
-        driver2.b().onTrue(c_intakeOut);
-        driver2.b().onFalse(c_intakeStop);
+        driver1.b().onTrue(c_intakeOut);
+        driver1.b().onFalse(c_intakeStop);
 
-        driver2.x().onTrue(c_intakeToAmp);
-        driver2.x().onFalse(c_intakeStop);
+        driver1.x().onTrue(c_intakeToAmp);
+        driver1.x().onFalse(c_intakeStop);
         
-        driver2.y().onTrue(c_intakeAmpOut);
-        driver2.y().onFalse(c_intakeStop);
+        driver1.y().onTrue(c_intakeAmpOut);
+        driver1.y().onFalse(c_intakeStop);
     }
 
     /**
