@@ -2,6 +2,7 @@ package frc.robot;
 
 import javax.management.InstanceNotFoundException;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
@@ -110,6 +111,7 @@ public class RobotContainer {
             () -> -driver0.getRightX(),
             () -> driver0.y().getAsBoolean()));
         // Configure the button bindings
+
         configureButtonBindings();
     }
 

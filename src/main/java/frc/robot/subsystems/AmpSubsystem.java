@@ -31,6 +31,7 @@ public class AmpSubsystem extends SubsystemBase{
         initalizeMotors();
         configureMotors();
         armPID = new PIDController(0.008, 0, 0);
+        setArmState(ampArmSetpoints.HOME);
     }
 
     @Override
@@ -45,6 +46,7 @@ public class AmpSubsystem extends SubsystemBase{
         armPID.setSetpoint(state.getValue());
         SmartDashboard.putString("Amp arm state", state.toString());
         SmartDashboard.putNumber("Amp Arm target", state.getValue());
+        SmartDashboard.putNumber("aosetnuhaou", armPosition);
     }
 
     public void setIndexWheelState(ampIndexState state) {
