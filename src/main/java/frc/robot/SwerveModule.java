@@ -6,6 +6,7 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -19,9 +20,11 @@ public class SwerveModule {
     public int moduleNumber;
     private Rotation2d angleOffset;
 
-    public TalonFX mAngleMotor;
-    public TalonFX mDriveMotor;
+    private TalonFX mAngleMotor;
+    private TalonFX mDriveMotor;
     private CANcoder angleEncoder;
+    private PIDController theataController; 
+    private double speed; 
 
     private final SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(Constants.Swerve.DRIVE_KS, Constants.Swerve.DRIVE_KV, Constants.Swerve.DRIVE_KA);
 
@@ -35,7 +38,9 @@ public class SwerveModule {
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
         this.moduleNumber = moduleNumber;
         this.angleOffset = moduleConstants.angleOffset;
-        
+        this.theataController = new PIDController(0.2,0,0);
+        this.theataController.enableContinuousInput(Math.PI,-Math.PI);
+
         /* Angle Encoder Config */
         angleEncoder = new CANcoder(moduleConstants.cancoderID, Constants.Swerve.FRC_CANBUS_NAME);
         angleEncoder.getConfigurator().apply(Robot.ctreConfigs.swerveCANcoderConfig);
@@ -52,23 +57,27 @@ public class SwerveModule {
     }
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
-        //desiredState = SwerveModuleState.optimize(desiredState, getState().angle); 
-       mAngleMotor.setControl(anglePosition.withPosition((desiredState.angle.getRotations()*3)));
-      // mAngleMotor.setContro
-        //SmartDashboard.putNumber("1"+ moduleNumber, desiredState.angle.getRotations());
+        desiredState = SwerveModuleState.optimize(desiredState, getState().angle); 
+        theataController.setSetpoint(desiredState.angle.getRadians());
+        theataController.calculate(angleEncoder.getPosition().getValueAsDouble() * 2 * Math.PI);
+       /// SmartDashboard.putNumber("toeaht", angleEncoder.getPosition().getValueAsDouble());
+        //mAngleMotor.setControl(anglePosition.withPosition((desiredState.angle.getRotations()*3)));
+        
+        mAngleMotor.set(theataController.calculate(angleEncoder.getPosition().getValueAsDouble()));//theataController.calculate(angleEncoder.getPosition().getValueAsDouble()));
         setSpeed(desiredState, isOpenLoop);
     }
 
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop){
-        if(isOpenLoop){
-            driveDutyCycle.Output = desiredState.speedMetersPerSecond / Constants.Swerve.MAX_SPEED;
-            mDriveMotor.setControl(driveDutyCycle);
-        }
-        else {
-            driveVelocity.Velocity = Conversions.MPSToRPS(desiredState.speedMetersPerSecond, Constants.Swerve.WHEEL_CIRCUMFERENCE);
-            driveVelocity.FeedForward = driveFeedForward.calculate(desiredState.speedMetersPerSecond);
-            mDriveMotor.setControl(driveVelocity);
-        }
+        // if(isOpenLoop){
+        //     driveDutyCycle.Output = desiredState.speedMetersPerSecond / Constants.Swerve.MAX_SPEED;
+        //     mDriveMotor.setControl(driveDutyCycle);
+        // }
+        // else {
+        //     driveVelocity.Velocity = Conversions.MPSToRPS(desiredState.speedMetersPerSecond, Constants.Swerve.WHEEL_CIRCUMFERENCE);
+        //     driveVelocity.FeedForward = driveFeedForward.calculate(desiredState.speedMetersPerSecond);
+        //     mDriveMotor.setControl(driveVelocity);
+        // }
+        mDriveMotor.set(0);
     }
 
     public Rotation2d getCANcoder(){

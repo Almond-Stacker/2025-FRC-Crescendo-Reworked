@@ -104,14 +104,16 @@ public class RobotContainer {
         //     )
         // );
 
-        s_Swerve.setDefaultCommand(new TeleopSwerve(
-            s_Swerve, 
-            () -> -driver0.getLeftY(), 
-            () -> -driver0.getLeftX(), 
-            () -> -driver0.getRightX(),
-            () -> driver0.y().getAsBoolean()));
+        // s_Swerve.setDefaultCommand(new TeleopSwerve(
+        //     s_Swerve, 
+        //     () -> -driver0.getLeftY(), 
+        //     () -> -driver0.getLeftX(), 
+        //     () -> -driver0.getRightX(),
+        //     () -> driver0.y().getAsBoolean()));
         // Configure the button bindings
 
+        driver0.a().onTrue( new angle(s_Swerve, 79));
+        driver0.a().onFalse(new angle(s_Swerve, 20));
         configureButtonBindings();
     }
 
