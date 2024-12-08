@@ -58,25 +58,25 @@ public class SwerveModule {
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
         desiredState = SwerveModuleState.optimize(desiredState, getState().angle); 
-        theataController.setSetpoint(desiredState.angle.getRadians());
-        theataController.calculate(angleEncoder.getPosition().getValueAsDouble() * 2 * Math.PI);
-       /// SmartDashboard.putNumber("toeaht", angleEncoder.getPosition().getValueAsDouble());
-        //mAngleMotor.setControl(anglePosition.withPosition((desiredState.angle.getRotations()*3)));
-        
-        mAngleMotor.set(theataController.calculate(angleEncoder.getPosition().getValueAsDouble()));//theataController.calculate(angleEncoder.getPosition().getValueAsDouble()));
+        setTheata(desiredState.angle.getRadians());
         setSpeed(desiredState, isOpenLoop);
     }
 
+    private void setTheata(double desiredAngle) {
+        theataController.setSetpoint(desiredAngle);
+        mAngleMotor.set(theataController.calculate(angleEncoder.getAbsolutePosition().getValueAsDouble() * 2 * Math.PI));
+    }
+
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop){
-        // if(isOpenLoop){
-        //     driveDutyCycle.Output = desiredState.speedMetersPerSecond / Constants.Swerve.MAX_SPEED;
-        //     mDriveMotor.setControl(driveDutyCycle);
-        // }
-        // else {
-        //     driveVelocity.Velocity = Conversions.MPSToRPS(desiredState.speedMetersPerSecond, Constants.Swerve.WHEEL_CIRCUMFERENCE);
-        //     driveVelocity.FeedForward = driveFeedForward.calculate(desiredState.speedMetersPerSecond);
-        //     mDriveMotor.setControl(driveVelocity);
-        // }
+        if(isOpenLoop){
+            driveDutyCycle.Output = desiredState.speedMetersPerSecond / Constants.Swerve.MAX_SPEED;
+            mDriveMotor.setControl(driveDutyCycle);
+        }
+        else {
+            driveVelocity.Velocity = Conversions.MPSToRPS(desiredState.speedMetersPerSecond, Constants.Swerve.WHEEL_CIRCUMFERENCE);
+            driveVelocity.FeedForward = driveFeedForward.calculate(desiredState.speedMetersPerSecond);
+            mDriveMotor.setControl(driveVelocity);
+        }
         mDriveMotor.set(0);
     }
 
