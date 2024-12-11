@@ -24,7 +24,6 @@ public class SwerveModule {
     private TalonFX mDriveMotor;
     private CANcoder angleEncoder;
     private PIDController theataController; 
-    private double speed; 
 
     private final SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(Constants.Swerve.DRIVE_KS, Constants.Swerve.DRIVE_KV, Constants.Swerve.DRIVE_KA);
 
@@ -38,7 +37,7 @@ public class SwerveModule {
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
         this.moduleNumber = moduleNumber;
         this.angleOffset = moduleConstants.angleOffset;
-        this.theataController = new PIDController(0.2,0,0);
+        this.theataController = new PIDController(0.14,0,0);
         this.theataController.enableContinuousInput(Math.PI,-Math.PI);
 
         /* Angle Encoder Config */
@@ -64,7 +63,7 @@ public class SwerveModule {
 
     private void setTheata(double desiredAngle) {
         theataController.setSetpoint(desiredAngle);
-        mAngleMotor.set(theataController.calculate(angleEncoder.getAbsolutePosition().getValueAsDouble() * 2 * Math.PI));
+        mAngleMotor.set(theataController.calculate(getPosition().angle.getRadians()));
     }
 
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop){
@@ -77,7 +76,6 @@ public class SwerveModule {
             driveVelocity.FeedForward = driveFeedForward.calculate(desiredState.speedMetersPerSecond);
             mDriveMotor.setControl(driveVelocity);
         }
-        mDriveMotor.set(0);
     }
 
     public Rotation2d getCANcoder(){
