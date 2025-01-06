@@ -121,7 +121,7 @@ public class ShooterSubsystem extends SubsystemBase{
         m_bottomShootingMotor.setInverted(false);
         m_topShootingMotor.setInverted(false);
 
-        m_leftFeedMotor.setInverted(true);
+        m_leftFeedMotor.setInverted(false);
         m_rightFeedMotor.setInverted(true);
     }
 

@@ -12,13 +12,13 @@ public class States {
     public class shooterEnums {
         public enum aimingSetPoints {
             MIN(56),
-            MAX(169.7),
-            HOME(60),
+            MAX(190),
+            HOME(58),
             FLOAT(70),
-            INTAKE(),
+            INTAKE(170),
             TRAP(),
-            FAR(),
-            NEAR(),
+            FAR(70),
+            NEAR(70),
             CLIMB();
         
 
@@ -38,8 +38,8 @@ public class States {
         }
 
         public enum feederState {
-            INTAKE(0.2),
-            OUT(-0.2),
+            INTAKE(0.5),
+            OUT(-0.5),
             STOP(0);
 
             private final double value;
@@ -90,9 +90,9 @@ public class States {
         public enum ampArmSetpoints {
             HOME(306),
             MIN(304),
-            TRAP(),
-            AIM(),
-            MAX(172),
+            TRAP(152),
+            AIM(154),
+            MAX(71),
             UP(),
             DOWN();
 

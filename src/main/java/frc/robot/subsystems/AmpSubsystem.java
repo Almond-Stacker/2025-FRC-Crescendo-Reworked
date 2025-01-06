@@ -70,8 +70,8 @@ public class AmpSubsystem extends SubsystemBase{
         CANSparkMaxUtil.setCANSparkMaxBusUsage(m_leftArmMotor, Usage.kVelocityOnly);
         CANSparkMaxUtil.setCANSparkMaxBusUsage(m_rightArmMotor, Usage.kVelocityOnly);
 
-        m_rightArmMotor.setIdleMode(IdleMode.kCoast);
-        m_leftArmMotor.setIdleMode(IdleMode.kCoast);
+        m_rightArmMotor.setIdleMode(IdleMode.kBrake);
+        m_leftArmMotor.setIdleMode(IdleMode.kBrake);
 
         m_rightArmMotor.setInverted(false);
         m_leftArmMotor.setInverted(true);

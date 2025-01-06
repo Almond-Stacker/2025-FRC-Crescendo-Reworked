@@ -69,6 +69,10 @@ public class CommandFactory {
         public AmpCommand createAmpIndexOutCommand() {
             return new AmpCommand(new AmpCommand.AmpConfiguration(s_amp).withIndexState(ampIndexState.OUT).build());
         }
+
+        public AmpCommand createAmpIndexStopCommand() {
+            return new AmpCommand(new AmpCommand.AmpConfiguration(s_amp).withIndexState(ampIndexState.STOP).build());
+        }
     }
 
 }

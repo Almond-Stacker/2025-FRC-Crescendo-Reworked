@@ -23,6 +23,7 @@ public class IntakeSubsystem extends SubsystemBase{
         initalizeMotors();
         configureMotors();
         setIntakeState(intakeState.STOP);
+        m_frontMotor.disable();
     }
 
     public void setIntakeState(intakeState state) {
@@ -31,13 +32,13 @@ public class IntakeSubsystem extends SubsystemBase{
                 setIntakeSpeed(-0.55, -0.75, 0.75);
                 break;
             case OUT:
-                setIntakeSpeed(0.55, -0.5, 0.5);
+                setIntakeSpeed(0.35, -0.5, 0.5);
                 break;
             case STOP:
                 setIntakeSpeed(0, 0, 0);
                 break;
             case AMP_INTAKE:
-                setIntakeSpeed(0.25, 0.75, 0.75);
+                setIntakeSpeed(-0.25, 0.75, 0.75);
                 break;
         }
         SmartDashboard.putString("Intake State", state.toString());
