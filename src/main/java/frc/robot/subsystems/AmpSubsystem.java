@@ -1,8 +1,8 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycle;
@@ -11,15 +11,15 @@ import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.lib.util.CANSparkMaxUtil;
-import frc.lib.util.CANSparkMaxUtil.Usage;
+import frc.lib.util.SparkMaxUtil;
+import frc.lib.util.SparkMaxUtil.Usage;
 import frc.robot.Constants.AmpSubsystemInfo;
 import frc.robot.States.AmpEnums.*;
 import frc.robot.Constants.AmpSubsystemInfo;
 
 public class AmpSubsystem extends SubsystemBase{
-    private CANSparkMax m_rightArmMotor;
-    private CANSparkMax m_leftArmMotor;
+    private SparkMax m_rightArmMotor;
+    private SparkMax m_leftArmMotor;
     private PWMSparkMax m_indexMotor;
     private DutyCycleEncoder armEncoder;
     
@@ -36,7 +36,7 @@ public class AmpSubsystem extends SubsystemBase{
 
     @Override
     public void periodic() {
-        armPosition = armEncoder.getAbsolutePosition() * 360;
+        armPosition = armEncoder.get() * 360;
         armSpeed = armPID.calculate(armPosition);
         setArmSpeed(armSpeed);
         setSmartDashboardData();
@@ -60,21 +60,14 @@ public class AmpSubsystem extends SubsystemBase{
     }
 
     private void initalizeMotors() {
-        m_rightArmMotor = new CANSparkMax(AmpSubsystemInfo.RIGHT_ARM_MOTOR_ID, MotorType.kBrushless);
-        m_leftArmMotor = new CANSparkMax(AmpSubsystemInfo.LEFT_ARM_MOTOR_ID, MotorType.kBrushless);
+        m_rightArmMotor = new SparkMax(AmpSubsystemInfo.RIGHT_ARM_MOTOR_ID, MotorType.kBrushless);
+        m_leftArmMotor = new SparkMax(AmpSubsystemInfo.LEFT_ARM_MOTOR_ID, MotorType.kBrushless);
         m_indexMotor = new PWMSparkMax(AmpSubsystemInfo.AMP_SCORER_MOTOR_ID);
         armEncoder = new DutyCycleEncoder(AmpSubsystemInfo.AMP_ENCODER);
     }
-
     private void configureMotors() {
-        CANSparkMaxUtil.setCANSparkMaxBusUsage(m_leftArmMotor, Usage.kVelocityOnly);
-        CANSparkMaxUtil.setCANSparkMaxBusUsage(m_rightArmMotor, Usage.kVelocityOnly);
-
-        m_rightArmMotor.setIdleMode(IdleMode.kBrake);
-        m_leftArmMotor.setIdleMode(IdleMode.kBrake);
-
-        m_rightArmMotor.setInverted(false);
-        m_leftArmMotor.setInverted(true);
+        SparkMaxUtil.setSparkMaxBusUsage(m_leftArmMotor, Usage.kVelocityOnly, IdleMode.kBrake, false, false);
+        SparkMaxUtil.setSparkMaxBusUsage(m_rightArmMotor, Usage.kVelocityOnly, IdleMode.kBrake, false, true);
     }
 
     private void setSmartDashboardData() {

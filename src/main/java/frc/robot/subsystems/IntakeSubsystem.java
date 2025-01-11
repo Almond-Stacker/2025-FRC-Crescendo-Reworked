@@ -1,23 +1,22 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkFlex;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.lib.util.CANSparkFlexUtil;
-import frc.lib.util.CANSparkMaxUtil;
-import frc.lib.util.CANSparkFlexUtil.Usage;
+import frc.lib.util.SparkFlexUtil;
+import frc.lib.util.SparkFlexUtil.Usage;
 
 import frc.robot.Constants;
 import frc.robot.States.intakeState;
 
 public class IntakeSubsystem extends SubsystemBase{
-    private CANSparkFlex m_wheelMotor;
-    private CANSparkFlex m_floorMotor;
+    private SparkFlex m_wheelMotor;
+    private SparkFlex m_floorMotor;
     private PWMSparkMax m_frontMotor;
     public IntakeSubsystem() {
         initalizeMotors();
@@ -51,17 +50,14 @@ public class IntakeSubsystem extends SubsystemBase{
     }
 
     private void initalizeMotors() {
-        m_wheelMotor = new CANSparkFlex(Constants.IntakeSubsystemInfo.WHEEL_MOTOR_ID, MotorType.kBrushless);
-        m_floorMotor = new CANSparkFlex(Constants.IntakeSubsystemInfo.FLOOR_MOTOR_ID, MotorType.kBrushless);
+        m_wheelMotor = new SparkFlex(Constants.IntakeSubsystemInfo.WHEEL_MOTOR_ID, MotorType.kBrushless);
+        m_floorMotor = new SparkFlex(Constants.IntakeSubsystemInfo.FLOOR_MOTOR_ID, MotorType.kBrushless);
         m_frontMotor = new PWMSparkMax(Constants.IntakeSubsystemInfo.FRONT_MOTOR_ID);
     }
 
     private void configureMotors() {
-        CANSparkFlexUtil.setCANSparkFlexBusUsage(m_wheelMotor, Usage.kVelocityOnly);
-        CANSparkFlexUtil.setCANSparkFlexBusUsage(m_floorMotor, Usage.kVelocityOnly);
-
-        m_wheelMotor.setInverted(false);
+        SparkFlexUtil.setSparkFlexBusUsage(m_wheelMotor, Usage.kVelocityOnly, IdleMode.kCoast, false, false);
+        SparkFlexUtil.setSparkFlexBusUsage(m_floorMotor, Usage.kVelocityOnly, IdleMode.kCoast, false, false);    
         m_frontMotor.setInverted(false); //was true
-        m_floorMotor.setInverted(false); //was true
     }
 }
