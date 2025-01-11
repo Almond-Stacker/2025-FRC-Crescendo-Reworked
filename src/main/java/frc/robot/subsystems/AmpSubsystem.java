@@ -30,7 +30,7 @@ public class AmpSubsystem extends SubsystemBase{
     public AmpSubsystem() {
         initalizeMotors();
         configureMotors();
-        armPID = new PIDController(0.008, 0, 0);
+        armPID = new PIDController(0.0032, 0, 0);
         setArmState(ampArmSetpoints.HOME);
     }
 
@@ -46,7 +46,6 @@ public class AmpSubsystem extends SubsystemBase{
         armPID.setSetpoint(state.getValue());
         SmartDashboard.putString("Amp arm state", state.toString());
         SmartDashboard.putNumber("Amp Arm target", state.getValue());
-        SmartDashboard.putNumber("aosetnuhaou", armPosition);
     }
 
     public void setIndexWheelState(ampIndexState state) {
@@ -66,8 +65,8 @@ public class AmpSubsystem extends SubsystemBase{
         armEncoder = new DutyCycleEncoder(AmpSubsystemInfo.AMP_ENCODER);
     }
     private void configureMotors() {
-        SparkMaxUtil.setSparkMaxBusUsage(m_leftArmMotor, Usage.kVelocityOnly, IdleMode.kBrake, false, false);
-        SparkMaxUtil.setSparkMaxBusUsage(m_rightArmMotor, Usage.kVelocityOnly, IdleMode.kBrake, false, true);
+        SparkMaxUtil.setSparkMaxBusUsage(m_leftArmMotor, Usage.kAll, IdleMode.kBrake, false, true);
+        SparkMaxUtil.setSparkMaxBusUsage(m_rightArmMotor, Usage.kAll, IdleMode.kBrake, false, false);
     }
 
     private void setSmartDashboardData() {

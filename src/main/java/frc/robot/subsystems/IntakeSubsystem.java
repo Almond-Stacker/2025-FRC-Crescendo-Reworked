@@ -56,8 +56,8 @@ public class IntakeSubsystem extends SubsystemBase{
     }
 
     private void configureMotors() {
-        SparkFlexUtil.setSparkFlexBusUsage(m_wheelMotor, Usage.kVelocityOnly, IdleMode.kCoast, false, false);
-        SparkFlexUtil.setSparkFlexBusUsage(m_floorMotor, Usage.kVelocityOnly, IdleMode.kCoast, false, false);    
+        SparkFlexUtil.setSparkFlexBusUsage(m_wheelMotor, Usage.kAll, IdleMode.kCoast, false, false);
+        SparkFlexUtil.setSparkFlexBusUsage(m_floorMotor, Usage.kAll, IdleMode.kCoast, false, false);    
         m_frontMotor.setInverted(false); //was true
     }
 }
